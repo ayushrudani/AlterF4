@@ -46,6 +46,9 @@ const cropSchema = new mongoose.Schema({
   Geographic_Distribution : {
     type: String,
   },
+  image : {
+    type: String,
+  },
  
 });
 module.exports =  mongoose.model("Crops", cropSchema);

@@ -1,0 +1,6 @@
+
+  /* Nohemi-Bold */
+  @font-face {
+    font-family: NohemiBold;
+    src: url("../../public/fonts/Nohemi-Bold.otf") format("opentype");
+  }
