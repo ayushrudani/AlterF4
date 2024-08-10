@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
-import Navbar from "../Components/Navbar/Navbar";
+
 import { Outlet } from "react-router-dom";
 import "../Styles/Fonts.css";
+import Navbar from "../components/Navbar/Navbar";
 
 const MainLayout = () => {
   const [isLoading, setIsLoading] = useState(true);

@@ -6,6 +6,7 @@ import { BrowserRouter } from "react-router-dom";
 import { UserProvider } from "./Context/UserContext";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
+import "react-quill/dist/quill.snow.css";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(

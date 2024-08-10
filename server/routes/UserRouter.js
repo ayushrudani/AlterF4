@@ -1,17 +1,10 @@
-const   express = require("express");
-const postController =  require("../controllers/postController.js");
-
+const express = require("express");
+const userController = require("../controllers/userController.js");
 const router = express.Router();
 
-// router.post("/resetPassword/:id/:token", userController.resetPassword);
-router.post("/createPost", postController.createPost);
-router.post("/addComment", postController.addComment);
-router.post("/addComment", postController.addComment);
-router.post("/addLikeInComment", postController.addLikeInComment);
-// router.post("/addLikeInComment", postController.addLikeInComment);
-// router.post("/removeLikeInComment", postController.addLikeInComment);
-// router.post("/addLikeInComment", postController.addLikeInComment);
+router.post("/register", userController.register);
+router.post("/login", userController.login);
+router.post("/sendOTP", userController.register);
+router.post("/getUserByToken", userController.getUserByToken);
 
-
-
-module.exports =  router;
+module.exports = router;

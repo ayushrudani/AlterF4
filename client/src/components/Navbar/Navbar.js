@@ -123,7 +123,7 @@ const Navbar = () => {
                 >
                   <div className="flex flex-col gap-2">
                     <Link
-                      to="/diseases"
+                      to="/community/QuestionAnswer/post"
                       className="flex items-center gap-3.5 text-sm  duration-300 ease-in-out hover:text-primary lg:text-base"
                     >
                       Question & Answer

@@ -10,16 +10,16 @@ export function UserProvider({ children }) {
   const navigate = useNavigate();
 
   const SendOTP = async (phonenumber) => {
-    const response = await fetch(`${BashURL}/user/sendOTP`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ phone: phonenumber }),
-    });
-    const data = await response.json();
-    console.log(data);
-    sessionStorage.setItem("OTP", data.data.otp);
+    // const response = await fetch(`${BashURL}/user/sendOTP`, {
+    //   method: "POST",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    //   body: JSON.stringify({ phone: phonenumber }),
+    // });
+    // const data = await response.json();
+    // console.log(data);
+    // sessionStorage.setItem("OTP", data.data.otp);
   };
 
   const RegisterUser = async (user) => {
@@ -42,6 +42,7 @@ export function UserProvider({ children }) {
       },
       body: JSON.stringify(user),
     });
+    console.log(response);
     const data = await response.json();
     sessionStorage.setItem("token", data.token);
     navigate("/");
