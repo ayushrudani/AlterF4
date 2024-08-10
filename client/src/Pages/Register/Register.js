@@ -169,8 +169,8 @@ const Register = () => {
               <button
                 onClick={() => {
                   alert("OTP Sent to your phone number");
-                  SendOTP(userDetails.phone);
-                  setStep(2);
+                  // SendOTP(userDetails.phone);
+                  setStep(3);
                 }}
                 className="block w-full bg-[#47a11d] mt-4 py-2 rounded-2xl text-white font-semibold mb-2"
               >
