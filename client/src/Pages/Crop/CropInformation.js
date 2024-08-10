@@ -93,7 +93,12 @@ const CropInformation = () => {
                 {information.map(
                   (info, index) =>
                     index > 4 && (
-                      <div className="w-full h-[130px] bg-white border border-gray-200 rounded-lg shadow flex flex-row gap-x-[20px]">
+                      <div
+                        className="w-full h-[130px] bg-white border border-gray-200 rounded-lg shadow flex flex-row gap-x-[20px]"
+                        onClick={() => {
+                          navigate(`/crop/information/detail/${info._id}`);
+                        }}
+                      >
                         <div className="w-[170px] h-full">
                           <img
                             className="object-cover w-full rounded-l-lg h-full"
