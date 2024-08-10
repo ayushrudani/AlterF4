@@ -32,7 +32,8 @@ Body = {"contents":[{"parts":[{"text":"hamster kombat mining"}]}]}
    "state" : "Gujarat",
    "city" : "Dhanera",
    "acre" : 12,
-   "water_level" : "Low"
+   "water_level" : "Low",
+   
 }
 ``` 
 
@@ -66,3 +67,62 @@ POST http://localhost:5447/api/user/sendOTP
      "phone" : "123456789"
   }
 ```
+
+#### getUserByToken
+```
+POST http://localhost:5447/api/user/getUserByToken
+```
+```json
+{
+  "token" : "zYiiNJ1uRfdb"
+}
+```
+
+#### cerate POST
+```
+POST http://localhost:5447/api/post/createPost
+```
+```json
+{
+      "problem" : "dewewxwefuiwxfuif",
+      "userId" : "QbV40v57D4Ky" ,
+      "imageURL" : "abc.png"
+  }
+```
+
+#### addComment in  POST
+```
+POST http://localhost:5447/api/post/addComment
+```
+```json
+{
+      "userId"  : "QbV40v57D4Ky",
+      "postId" : "66b704c63589f10c8cbc2c97" ,
+      "commentMsg" : " very good"
+  }
+```
+
+#### addCommentByLike in  POST
+```
+POST http://localhost:5447/api/post/addLikeInComment
+```
+```json
+{
+      "userId"  : "QbV40v57D4Ky",
+      "commentId" : "66b705c37c6dbfb0895ebba7" 
+      }
+```
+
+#### getAllCrops 
+```
+GET http://localhost:5447/api/crop/getAllCorp/2
+
+2 is page number
+```
+
+#### getCropsById 
+```
+GET http://localhost:5447/api/crop/getCropById/:cropId
+```
+
+
