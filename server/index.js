@@ -20,9 +20,13 @@ const PORT = 5447;
 
 //Routes
 const userRouter = require('./routes/UserRouter.js');
+const postRouter = require('./routes/PostRouter.js');
+const cropRouter = require('./routes/CropRouter.js');
 
 
 app.use('/api/user', userRouter);
+app.use('/api/post', postRouter);
+app.use('/api/crop', cropRouter);
 
 
 app.get('/', (req, res) => {

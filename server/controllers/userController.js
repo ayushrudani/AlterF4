@@ -6,6 +6,7 @@ const {ApiErrorResponse , ApiSucceessResponse} = require("../utils/ApiResponse")
 // const asyncHandler = require("../utils/asyncHandler");
 const sendMail = require("../utils/sendEmail.js");
 const sendSMS = require("../utils/sendSMS.js");
+const genrateToken = require("../utils/generateUniqueId.js")
 
 //server BASE_URL
 const  {BASE_URL} = require("../utils/constent.js");
@@ -31,16 +32,10 @@ const login = async (req, res) => {
        return res.json(new  ApiErrorResponse(500, "Invalid password"));
       }
 
-      //token generation
-     let  token = jwt.sign({_id: user._id}, process.env.JWT_SECRET_KEY);
-    //  let  token = jwt.sign({email: existingAdmin.email }, process.env.JWT_SECRET_KEY,{ expiresIn: "1h" });
-
      //password remove
      user.password = undefined;
-     user.token = token;
 
-     let data = {user , token}
-       res.json(new ApiSucceessResponse(200, data, "Login successful" , token));
+       res.json(new ApiSucceessResponse(200, null, "Login successful"  , user.token));
   };
 
 //Regeter function
@@ -55,9 +50,7 @@ const register = async (req, res) => {
 
         //check user already exist
         let user = null;
-        if(email != null){
-          user = await User.findOne({ email: email});
-        }else{
+        if(phone != null){
           user = await User.findOne({ phone: phone});
         }
         if (user) {
@@ -67,8 +60,10 @@ const register = async (req, res) => {
         //hash password
         let hashedPassword = await bcrypt.hash(password, 10);
 
+        //genrate userId
+         let userId =  genrateToken();
         //create user
-        const newUser = new User({name: name,email: email,password: hashedPassword , phone: phone, state: state, city: city, acre: acre, water_level: water_level});
+        const newUser = new User({name: name,email: email,password: hashedPassword , phone: phone, state: state, city: city, acre: acre, water_level: water_level , userId : userId});
 
         //save user in database
         await newUser.save();
@@ -89,8 +84,6 @@ const sendOTP = async (req, res) => {
     //send otp
   let result =   sendSMS(phone, `Your OTP is ${otp}`);
 
-  console.log(result);
-
    if(result){
     return res.json(new ApiSucceessResponse(200 , {otp : otp} ,"OTP sent successfully"  ))
    }else{
@@ -102,6 +95,27 @@ const sendOTP = async (req, res) => {
     return res.json(new  ApiErrorResponse(500 , error.message));
   }
 }
+
+const getUserByToken = async (req, res) => {
+  try {
+    const { token } = req.body;
+     
+   //verify token
+   let user = await User.findOne({ token: token});
+
+   if (!user) {
+    return res.json(new  ApiErrorResponse(404, "Invalid token"));
+   }
+
+   user.password = undefined;
+   user._id= undefined;
+   return res.json(new ApiSucceessResponse(200 , user ,"User found" ));
+
+  }catch (error) {
+    return res.json(new  ApiErrorResponse(500 , error.message));
+  }
+}
+
 
 // //forget password function
 // const forgetPassword = asyncHandler(async(req , res)=>{
@@ -176,4 +190,4 @@ const sendOTP = async (req, res) => {
 // });
 
 // module.exports =  { login , register  , forgetPassword , resetPassword,verifyResetPasswordToken};   
-module.exports =  { login , register , sendOTP};   
+module.exports =  { login , register , sendOTP , getUserByToken};   
