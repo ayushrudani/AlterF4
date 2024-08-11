@@ -26,21 +26,29 @@ function DiseasesDetection() {
       reader.onloadend = async () => {
         const imageBase64 = reader.result.split(",")[1]; // Remove the prefix of the base64 string
 
-        const response = await fetch("http://localhost:5447/generate-content", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            prompt: "Find the disease in the image",
-            temperature: 0.7, // You can adjust the temperature as needed
-            imageBase64: imageBase64,
-            fileType: file.type.split("/")[1], // e.g., 'png' or 'jpeg'
-          }),
-        });
+        const response = await fetch(
+          "http://localhost:5447/generate-content-from-image",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              prompt: "Find the disease in the image",
+              temperature: 0.7, // You can adjust the temperature as needed
+              imageBase64: imageBase64,
+              fileType: file.type.split("/")[1], // e.g., 'png' or 'jpeg'
+            }),
+          }
+        );
 
         const data = await response.json();
-        setResult(data.result);
+        const formattedResponse = data.result
+          .replaceAll("**", "")
+          .replaceAll("*", "<br/>");
+        data.result = data.result.replace(/\*\*"/g, "").replace(/\*/g, "<br/>");
+
+        setResult(formattedResponse);
       };
 
       reader.readAsDataURL(file);
@@ -53,28 +61,39 @@ function DiseasesDetection() {
   };
 
   return (
-    <div className="diseases-detection-container">
-      <h1>Disease Detection for Crops</h1>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="file"
-          accept="image/*"
-          onChange={handleFileChange}
-          className="file-input"
-        />
-        <br />
-        <button type="submit" className="submit-button">
-          {loading ? "Processing..." : "Identify Disease"}
-        </button>
-      </form>
-      {error && <p className="error-message">{error}</p>}
-      {result && (
-        <div className="result-container">
-          <h2>Detected Disease:</h2>
-          <pre className="result-text">{result}</pre>
-        </div>
-      )}
-    </div>
+    <>
+      <div className="flex flex-col items-center justify-center h-[80vh]">
+        {/* Title */}
+        <h1 className="text-4xl font-bold mb-4">Diseases Detection</h1>
+
+        {/* Image Upload */}
+        <form
+          className="flex flex-col items-center justify-center"
+          onSubmit={handleSubmit}
+        >
+          <input
+            type="file"
+            accept="image/*"
+            onChange={handleFileChange}
+            className="mb-4"
+          />
+          <button
+            type="submit"
+            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+            disabled={loading}
+          >
+            {loading ? "Loading..." : "Submit"}
+          </button>
+        </form>
+
+        {/* Result */}
+        {loading && <p>Loading...</p>}
+        {error && <p className="text-red-500">{error}</p>}
+        {result && (
+          <p className="mt-4" dangerouslySetInnerHTML={{ __html: result }}></p>
+        )}
+      </div>
+    </>
   );
 }
 

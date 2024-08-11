@@ -37,7 +37,12 @@ export default function FindTree() {
         }
       );
 
-      setOutput(response.data.candidates[0].content.parts[0].text);
+      let result = response.data.candidates[0].content.parts[0].text;
+      const formattedResponse = result
+        .replaceAll("**", "")
+        .replaceAll("*", "<br/>");
+      result = result.replace(/\*\*"/g, "").replace(/\*/g, "<br/>");
+      setOutput(formattedResponse);
     } catch (error) {}
 
     setLoading(false);
@@ -86,20 +91,11 @@ export default function FindTree() {
         <h1 className="text-lg font-medium text-gray-800 mt-6">
           Name or Keyword: <span className="font-semibold">{name}</span>
         </h1>
-        <p className="text-gray-700 mt-2">{output}</p>
+        <p
+          className="text-gray-700 mt-2"
+          dangerouslySetInnerHTML={{ __html: output }}
+        ></p>
       </div>
     </div>
-
-    // <div>
-    //   <h1 className='text-center'>Select image Or name any tree</h1>
-
-    //   <input type='file' onChange={(e)=>handleSelectImage(e)} ></input>
-    //   <p>OR</p>
-    //   <input type='text' placeholder='Enter tree name' onChange={(e)=>setName(e.target.value)}></input>
-    //   <button onClick={handleFind}>{loading ? "Finding..." : "Find"}</button>
-
-    //   <h1>Name Or KeyWord : {name}</h1>
-    //   <p>{output}</p>
-    // </div>
   );
 }
