@@ -9,17 +9,14 @@ const Register = () => {
   const [passwordShown, setPasswordShown] = useState(false);
   const [userDetails, setUserDetails] = useState({
     name: "",
-    phone: "",
     password: "",
-    confirmPassword: "",
-    OTP: "",
     state: "",
     city: "",
     acre: "",
     water_level: "",
   });
   const navigate = useNavigate();
-  const { SendOTP, RegisterUser } = useUser();
+  const { RegisterUser } = useUser();
   const [step, setStep] = useState(1);
   const viewPassword = () => {
     var passwordInput = document.getElementById("password");
@@ -86,26 +83,6 @@ const Register = () => {
               <div className="input-field relative">
                 <input
                   className="w-full h-[49px] rounded-[16px] text-[15px] px-[15px] border-[2px] border-gray-200 bg-transparent outline-none focus:border-[#47a11d] transition-all duration-300"
-                  type="text"
-                  placeholder="Enter Phonenumber"
-                  onChange={(e) =>
-                    setUserDetails({
-                      ...userDetails,
-                      phone: e.target.value,
-                    })
-                  }
-                />
-                <label
-                  className="absolute opacity-0 left-[15px] translate-y-[-50%] text-gray-400 pointer-events-none
-            transition-all duration-300 
-          "
-                >
-                  Enter Phonenumber
-                </label>
-              </div>
-              <div className="input-field relative">
-                <input
-                  className="w-full h-[49px] rounded-[16px] text-[15px] px-[15px] border-[2px] border-gray-200 bg-transparent outline-none focus:border-[#47a11d] transition-all duration-300"
                   type="password"
                   id="password"
                   placeholder="Enter Password"
@@ -149,12 +126,12 @@ const Register = () => {
                   className="w-full h-[49px] rounded-[16px] text-[15px] px-[15px] border-[2px] border-gray-200 bg-transparent outline-none focus:border-[#47a11d] transition-all duration-300"
                   type="password"
                   placeholder="Confirm Password"
-                  onChange={(e) =>
-                    setUserDetails({
-                      ...userDetails,
-                      confirmPassword: e.target.value,
-                    })
-                  }
+                  // onChange={(e) =>
+                  //   setUserDetails({
+                  //     ...userDetails,
+                  //     confirmPassword: e.target.value,
+                  //   })
+                  // }
                 />
 
                 <label
@@ -168,9 +145,7 @@ const Register = () => {
               </div>
               <button
                 onClick={() => {
-                  alert("OTP Sent to your phone number");
-                  // SendOTP(userDetails.phone);
-                  setStep(3);
+                  setStep(2);
                 }}
                 className="block w-full bg-[#47a11d] mt-4 py-2 rounded-2xl text-white font-semibold mb-2"
               >
@@ -179,36 +154,6 @@ const Register = () => {
             </div>
           )}
           {step === 2 && (
-            <div className="flex flex-col gap-y-[20px]">
-              <div className="input-field relative">
-                <input
-                  className="w-full h-[49px] rounded-[16px] text-[15px] px-[15px] border-[2px] border-gray-200 bg-transparent outline-none focus:border-[#47a11d] transition-all duration-300"
-                  type="text"
-                  placeholder="Enter OTP"
-                  onChange={(e) =>
-                    setUserDetails({ ...userDetails, OTP: e.target.value })
-                  }
-                />
-                <label className="absolute opacity-0 left-[15px] translate-y-[-50%] text-gray-400 pointer-events-none"></label>
-              </div>
-              <button
-                onClick={() => {
-                  console.log(userDetails.OTP);
-                  console.log(sessionStorage.getItem("OTP"));
-                  if (userDetails.OTP === sessionStorage.getItem("OTP")) {
-                    alert("OTP Verified");
-                    setStep(3);
-                  } else {
-                    alert("Invalid OTP");
-                  }
-                }}
-                className="block w-full bg-[#47a11d] mt-4 py-2 rounded-2xl text-white font-semibold mb-2"
-              >
-                Verify OTP
-              </button>
-            </div>
-          )}
-          {step === 3 && (
             <div className="flex flex-col gap-y-[20px]">
               <div className="input-field relative">
                 <input
@@ -297,7 +242,7 @@ const Register = () => {
           <span className="text-sm ml-2  cursor-pointer">
             Have an account?{" "}
             <Link to={"/login"} className="hover:text-slate-400 text-bold">
-              Register
+              Login
             </Link>
           </span>
         </form>

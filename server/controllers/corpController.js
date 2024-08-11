@@ -40,14 +40,14 @@ const getAllCorp = async (req, res) => {
 const getCorpById = async (req, res) => {
   try {
     const { cropId } = req.params;
-
     if (!cropId) {
       return res.json(new ApiErrorResponse(400, "Crop id is required"));
     }
-
     const crop = await Crop.findOne({
       cropId: cropId,
     });
+
+    console.log(crop);
 
     if (!crop) {
       return res.json(new ApiErrorResponse(400, "Crop not found"));

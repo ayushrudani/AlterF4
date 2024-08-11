@@ -8,8 +8,8 @@ export function CropProvider({ children }) {
   const [information, setInformation] = useState(null);
   const [currentPage, setCurrentPage] = useState(0);
   const [cropDetail, setCropDetail] = useState(null);
-
   const [cropLoading, setCropLoading] = useState(true);
+  const [cropDetailLoading, setCropDetailLoading] = useState(true);
   const navigate = useNavigate();
 
   const getInformation = async () => {
@@ -17,21 +17,18 @@ export function CropProvider({ children }) {
       method: "GET",
     });
     const data = await response.json();
-    console.log(data);
     setInformation(data.data.crop);
     setCropLoading(false);
   };
 
   const getDetail = async (cropId) => {
-    console.log(cropId);
-    setCropLoading(true);
+    setCropDetailLoading(true);
     const response = await fetch(`${BashURL}/crop/getCropById/` + cropId, {
       method: "GET",
     });
     const data = await response.json();
-    console.log(data);
     setCropDetail(data.data);
-    setCropLoading(false);
+    setCropDetailLoading(false);
   };
   return (
     <CropContext.Provider
@@ -44,6 +41,7 @@ export function CropProvider({ children }) {
         setCurrentPage,
         getDetail,
         cropDetail,
+        cropDetailLoading,
       }}
     >
       {children}

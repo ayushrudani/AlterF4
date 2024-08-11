@@ -31,6 +31,7 @@ export function UserProvider({ children }) {
       body: JSON.stringify(user),
     });
     const data = await response.json();
+    console.log(data);
     sessionStorage.setItem("token", data.token);
   };
 
@@ -42,12 +43,25 @@ export function UserProvider({ children }) {
       },
       body: JSON.stringify(user),
     });
-    console.log(response);
     const data = await response.json();
+    console.log(data);
     sessionStorage.setItem("token", data.token);
     navigate("/");
   };
 
+  const getUserByToken = async () => {
+    const response = await fetch(`${BashURL}/user/getUserByToken`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ token: sessionStorage.getItem("token") }),
+    });
+    const data = await response.json();
+    console.log(data);
+    setUser(data.data);
+    setUserLoading(false);
+  };
   return (
     <UserContext.Provider
       value={{
@@ -58,6 +72,7 @@ export function UserProvider({ children }) {
         SendOTP,
         LoginUser,
         RegisterUser,
+        getUserByToken,
       }}
     >
       {children}

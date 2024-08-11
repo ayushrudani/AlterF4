@@ -17,10 +17,12 @@ const PORT = 5447;
 const userRouter = require("./routes/UserRouter.js");
 const postRouter = require("./routes/PostRouter.js");
 const cropRouter = require("./routes/CropRouter.js");
+const yojnaRouter = require("./routes/YojnaRouter.js");
 
 app.use("/api/user", userRouter);
 app.use("/api/post", postRouter);
 app.use("/api/crop", cropRouter);
+app.use("/api/yojnas", yojnaRouter);
 
 app.get("/", (req, res) => {
   res.send("Hello World!");

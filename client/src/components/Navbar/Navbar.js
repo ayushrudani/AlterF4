@@ -14,6 +14,7 @@ const Navbar = () => {
   }, []);
   const [dropdownOpenInfo, setDropdownOpenInfo] = useState(false);
   const [dropdownOpenCommunity, setDropdownOpenCommunity] = useState(false);
+  const [dropdownOpenProfile, setDropdownOpenProfile] = useState(false);
 
   return (
     <>
@@ -31,9 +32,9 @@ const Navbar = () => {
             }`}
           >
             <div>
-              <a href="/" className="text-black">
+              <Link to="/disease" className="text-black">
                 Diseases Detection
-              </a>
+              </Link>
             </div>
             <ClickOutside
               onClick={() => setDropdownOpenInfo(false)}
@@ -77,7 +78,7 @@ const Navbar = () => {
                       Information
                     </Link>
                     <Link
-                      to="/diseases"
+                      to="/crop/cropRecommendation"
                       className="flex items-center gap-3.5 text-sm  duration-300 ease-in-out hover:text-primary lg:text-base"
                     >
                       Crop Recommendation
@@ -123,13 +124,13 @@ const Navbar = () => {
                 >
                   <div className="flex flex-col gap-2">
                     <Link
-                      to="/community/QuestionAnswer/post"
+                      to="/community/QuestionAnswer"
                       className="flex items-center gap-3.5 text-sm  duration-300 ease-in-out hover:text-primary lg:text-base"
                     >
                       Question & Answer
                     </Link>
                     <Link
-                      to="/diseases"
+                      to="/community/GroupChat"
                       className="flex items-center gap-3.5 text-sm  duration-300 ease-in-out hover:text-primary lg:text-base"
                     >
                       Group Chat
@@ -139,9 +140,13 @@ const Navbar = () => {
               )}
               {/* <!-- Dropdown End --> */}
             </ClickOutside>
-            <a href="/register" className="text-black">
+            <Link to="/yojana" className="text-black">
               Yojana
-            </a>
+            </Link>
+
+            <Link to="/findtree" className="text-black">
+              Find Tree
+            </Link>
           </div>
 
           {/* Title */}
@@ -156,20 +161,44 @@ const Navbar = () => {
 
           {/* End */}
           {/* Profile */}
-          <div
-            className={`items-center space-x-4 hidden bg-red-400 ${
-              isLoggedIn ? "lg:flex" : "hidden"
-            }`}
-            onClick={() => {
-              navigate("/login");
-            }}
+          <ClickOutside
+            onClick={() => setDropdownOpenProfile(false)}
+            className={`${
+              isLoggedIn ? "lg:relative" : "hidden"
+            } items-center space-x-4 `}
           >
-            <img
-              src="https://randomuser.me/api/portraits"
-              alt="profile"
-              className="w-10 h-10 rounded-full"
-            />
-          </div>
+            <Link
+              onClick={() => setDropdownOpenProfile(!dropdownOpenProfile)}
+              className="flex items-center gap-4"
+            >
+              <img
+                src="/2.svg"
+                alt="profile"
+                className="w-10 h-10 rounded-full"
+              />
+            </Link>
+            {/* <!-- Dropdown Start --> */}
+            {dropdownOpenProfile && (
+              <div
+                className={`absolute right-2 mt-4 flex w-[150px] flex-col border border-stroke bg-white shadow-default
+                    rounded-md px-3 py-2`}
+              >
+                <div className="flex flex-col gap-2">
+                  <button
+                    className="flex items-center gap-3.5 text-sm  duration-300 ease-in-out hover:text-primary lg:text-base"
+                    onClick={() => {
+                      sessionStorage.removeItem("token");
+                      setIsLoggedIn(false);
+                      navigate("/");
+                    }}
+                  >
+                    Logout
+                  </button>
+                </div>
+              </div>
+            )}
+            {/* <!-- Dropdown End --> */}
+          </ClickOutside>
 
           {/* Buttons */}
           <div
@@ -177,7 +206,12 @@ const Navbar = () => {
               isLoggedIn ? "lg:hidden" : "lg:flex"
             }`}
           >
-            <button className="border border-slate-400 px-[18px] py-[8px] rounded-[12px]">
+            <button
+              className="border border-slate-400 px-[18px] py-[8px] rounded-[12px]"
+              onClick={() => {
+                navigate("/register");
+              }}
+            >
               Register
             </button>
             <button

@@ -48,9 +48,9 @@ const Login = () => {
           className="bg-white w-[50%] flex flex-col gap-y-[20px]"
           onSubmit={(e) => {
             e.preventDefault();
-            const phone = e.target.phone.value;
+            const email = e.target.email.value;
             const password = e.target.password.value;
-            LoginUser({ phone, password });
+            LoginUser({ email, password });
           }}
         >
           <div className=" flex items-center flex-col">
@@ -65,15 +65,15 @@ const Login = () => {
             <input
               className="w-full h-[49px] rounded-[16px] text-[15px] px-[15px] border-[2px] border-gray-200 bg-transparent outline-none focus:border-[#47a11d] transition-all duration-300"
               type="text"
-              placeholder="Enter Phonenumber"
-              name="phone"
+              placeholder="Enter Email"
+              name="email"
             />
             <label
               className="absolute opacity-0 left-[15px] translate-y-[-50%] text-gray-400 pointer-events-none
               transition-all duration-300 
             "
             >
-              Enter Phonenumber
+              Enter Email
             </label>
           </div>
           <div className="input-field relative">
