@@ -3,14 +3,17 @@ import React, { useEffect, useState } from "react";
 import { Outlet } from "react-router-dom";
 import "../Styles/Fonts.css";
 import Navbar from "../components/Navbar/Navbar";
+import Home from "../Pages/Home/Home";
 
 const MainLayout = () => {
   const [isLoading, setIsLoading] = useState(true);
+  const [isLogin, setIsLogin] = useState(false);
   useEffect(() => {
     let token = sessionStorage.getItem("token");
     if (token) {
-      setIsLoading(false);
+      setIsLogin(true);
     }
+    setIsLoading(false);
   }, []);
   return (
     <>
@@ -40,12 +43,9 @@ const MainLayout = () => {
             <span class="sr-only">Loading...</span>
           </div>
         ) : (
-          <>
-            <Outlet />
-          </>
+          <>{isLogin ? <Outlet /> : <Home />}</>
         )}
       </div>
-      <p>Footer</p>
     </>
   );
 };

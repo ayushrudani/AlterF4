@@ -1,4 +1,4 @@
-const mongoose =  require("mongoose");
+const mongoose = require("mongoose");
 
 const userSchema = new mongoose.Schema({
   name: {
@@ -7,10 +7,7 @@ const userSchema = new mongoose.Schema({
   },
   email: {
     type: String,
-  },
-  phone: {
-    type: String,
-    unique: true,
+    required: true,
   },
   // password
   password: {
@@ -34,10 +31,10 @@ const userSchema = new mongoose.Schema({
     required: true,
     enum: ["Low", "Medium", "High"],
   },
-  userId : {
+  userId: {
     type: String,
     unique: true,
     required: true,
-  }
+  },
 });
-module.exports =  mongoose.model("Users", userSchema);
+module.exports = mongoose.model("Users", userSchema);

@@ -1,3 +1,5 @@
 const BashURL = "http://localhost:5447/api";
 
-export { BashURL };
+const findTreeModelAPI = "https://9ecd-104-196-102-6.ngrok-free.app/";
+
+export { BashURL, findTreeModelAPI };

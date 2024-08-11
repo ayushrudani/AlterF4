@@ -7,12 +7,18 @@ import { UserProvider } from "./Context/UserContext";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
 import "react-quill/dist/quill.snow.css";
+import { PostProvider } from "./Context/PostContext";
+import { CropProvider } from "./Context/CropContext";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <BrowserRouter>
     <UserProvider>
-      <App />
+      <PostProvider>
+        <CropProvider>
+          <App />
+        </CropProvider>
+      </PostProvider>
     </UserProvider>
     <ToastContainer
       position="top-right"

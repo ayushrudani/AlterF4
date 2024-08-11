@@ -1,11 +1,17 @@
 import React, { useState } from "react";
 import ReactQuill from "react-quill";
-import ImageUploader from "../../Constant/ImageUploader";
-import { imgToUrl } from "../../Constant/ImaageUrlgenrator";
+import ImageUploader from "../../../Constant/ImageUploader";
+import { imgToUrl } from "../../../Constant/ImaageUrlgenrator";
+import { usePost } from "../../../Context/PostContext";
 const QuestionAnswerAddEdit = () => {
   const [value, setValue] = useState("");
   const [ImaegUrl, setImaegUrl] = useState("");
 
+  const handleImageToUrl = async (e) => {
+    let ImaegUrl = await imgToUrl(e);
+    setImaegUrl(ImaegUrl);
+  };
+  const { createPost, postLoading } = usePost();
   return (
     <>
       <div className="flex flex-col gap-y-[20px] w-full h-full">
@@ -20,8 +26,11 @@ const QuestionAnswerAddEdit = () => {
           className="flex flex-col gap-y-4 h-full"
           onSubmit={(e) => {
             e.preventDefault();
-            console.log(value + " submitted");
-            console.log(ImaegUrl + " submitted");
+            createPost({
+              problem: value,
+              userId: sessionStorage.getItem("token"),
+              imageURL: ImaegUrl,
+            });
           }}
         >
           {/* Question */}
@@ -36,8 +45,7 @@ const QuestionAnswerAddEdit = () => {
               className="mb-4"
               onChange={(e) => {
                 e.preventDefault();
-                let ImaegUrl = imgToUrl(e);
-                setImaegUrl(ImaegUrl);
+                handleImageToUrl(e);
               }}
             />
           </div>
@@ -55,7 +63,7 @@ const QuestionAnswerAddEdit = () => {
           </div>
           {/* Button */}
           <button
-            className="bg-blue-400 mt-6 text-white rounded-lg p-2"
+            className="bg-blue-400 mt-10 text-white rounded-lg p-2"
             type="submit"
           >
             Submit

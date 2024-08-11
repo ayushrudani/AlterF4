@@ -1,19 +1,27 @@
-import axios from "axios";
+import { imageDb } from "./Config";
+import { getDownloadURL, listAll, ref, uploadBytes } from "firebase/storage";
+import { v4 } from "uuid";
+
+const IMGBB_API_KEY = process.env.IMGBB_API_KEY;
 
 export const imgToUrl = async (e) => {
-  const image = e.target.files[0];
-  const IMGBB_API_KEY = "29b6a4e1d21936f3ce2918076e89d7b4";
-  const formData = new FormData();
-  formData.set("image", image);
-
   try {
-    const response = await axios.post(
-      `https://api.imgbb.com/1/upload?key=${IMGBB_API_KEY}`,
-      formData
-    );
-    console.log(response.data.data.display_url);
-    return response.data.data.display_url;
+    let img = e.target.files[0];
+    let imgUrl = "";
+
+    if (img !== null) {
+      const imgRef = ref(imageDb, `files/${v4()}`);
+      await uploadBytes(imgRef, img).then((value) => {
+        console.log(value);
+        return getDownloadURL(value.ref).then((url) => {
+          console.log(url);
+          imgUrl = url;
+        });
+      });
+    }
+
+    return imgUrl;
   } catch (error) {
-    throw new Error("Failed to fetch image");
+    return "";
   }
 };
