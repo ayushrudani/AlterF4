@@ -14,7 +14,8 @@ app.use(express.urlencoded({ extended: false }));
 const model = "gemini-1.5-pro-latest";
 const GENAI_DISCOVERY_URL = `https://generativelanguage.googleapis.com/$discovery/rest?version=v1beta&key=${process.env.GEMINI_KEY}`;
 
-async function getTextGemini(prompt, temperature, imageBase64, fileType) {
+// Function to handle image and text generation
+async function generateContentFromImage(prompt, imageBase64, fileType) {
   const genaiService = await google.discoverAPI({ url: GENAI_DISCOVERY_URL });
   const auth = new google.auth.GoogleAuth().fromAPIKey(process.env.GEMINI_KEY);
 
@@ -47,6 +48,35 @@ async function getTextGemini(prompt, temperature, imageBase64, fileType) {
     ],
     generation_config: {
       maxOutputTokens: 4096,
+      temperature: 0.5, // Default temperature
+      topP: 0.8,
+    },
+  };
+
+  const generateContentResponse = await genaiService.models.generateContent({
+    model: `models/${model}`,
+    requestBody: contents,
+    auth: auth,
+  });
+
+  return generateContentResponse?.data?.candidates?.[0]?.content?.parts?.[0]
+    ?.text;
+}
+
+// Function to handle text-only generation
+async function generateContentFromText(prompt, temperature) {
+  const genaiService = await google.discoverAPI({ url: GENAI_DISCOVERY_URL });
+  const auth = new google.auth.GoogleAuth().fromAPIKey(process.env.GEMINI_KEY);
+
+  const contents = {
+    contents: [
+      {
+        role: "user",
+        parts: [{ text: prompt }],
+      },
+    ],
+    generation_config: {
+      maxOutputTokens: 4096,
       temperature: temperature || 0.5,
       topP: 0.8,
     },
@@ -62,12 +92,15 @@ async function getTextGemini(prompt, temperature, imageBase64, fileType) {
     ?.text;
 }
 
-app.post("/generate-content", async (req, res) => {
+app.post("/generate-content-from-image", async (req, res) => {
   try {
-    const { prompt, temperature, imageBase64, fileType } = req.body;
-    const result = await getTextGemini(
+    const { prompt, imageBase64, fileType } = req.body;
+    if (!prompt || !imageBase64) {
+      return res.status(400).json({ error: "Prompt and image are required." });
+    }
+
+    const result = await generateContentFromImage(
       prompt,
-      temperature,
       imageBase64,
       fileType
     );
@@ -76,9 +109,29 @@ app.post("/generate-content", async (req, res) => {
     console.error(error);
     res
       .status(500)
-      .json({ error: "An error occurred while generating content." });
+      .json({
+        error: "An error occurred while generating content from image.",
+      });
   }
 });
+
+app.post("/generate-content-from-text", async (req, res) => {
+  try {
+    const { prompt, temperature } = req.body;
+    if (!prompt) {
+      return res.status(400).json({ error: "Prompt is required." });
+    }
+
+    const result = await generateContentFromText(prompt, temperature);
+    res.json({ result });
+  } catch (error) {
+    console.error(error);
+    res
+      .status(500)
+      .json({ error: "An error occurred while generating content from text." });
+  }
+});
+
 //connect to database
 connectDB();
 

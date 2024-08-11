@@ -13,6 +13,7 @@ import PostDetail from "./Pages/Community/QuestionAnswer/PostDetail";
 import Hero from "./Pages/Home/Hero";
 import Yojana from "./Pages/Yojana/Yojana";
 import FindTree from "./Pages/FindTree/FindTree";
+import CropRecommendation from "./Pages/Crop/CropRecommendation";
 
 function App() {
   return (
@@ -39,10 +40,7 @@ function App() {
               </CropProvider>
             }
           />
-          <Route
-            path="cropRecommendation"
-            element={<h1>Crop Recommendation</h1>}
-          />
+          <Route path="cropRecommendation" element={<CropRecommendation />} />
         </Route>
         <Route path="community">
           <Route
